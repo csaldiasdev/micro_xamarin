@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MicroAppPOC.Views.StopSearchTabView"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:c="clr-namespace:MicroAppPOC.Infrastructure.Mvvm.Converters;assembly=MicroAppPOC"
+             Title="Search">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <c:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Margin="10">
+            <Entry Text="{Binding EntryStopCode}"
+                   Placeholder="Stop Code" 
+                   ClearButtonVisibility="WhileEditing"></Entry>
+            <Label Text="{Binding TotalResultsMessage}"
+                   HorizontalOptions="CenterAndExpand" />
+            <ListView IsVisible="{Binding IsVisibleStopsListView}"
+                      ItemsSource="{Binding Stops}"
+                      HasUnevenRows="True">
+                <ListView.Behaviors>
+                    <prism:EventToCommandBehavior EventName="ItemTapped"
+                                                  Command="{Binding ItemTapped}"
+                                                  EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="65"/>
+                                </Grid.RowDefinitions>
+                                
+                                <StackLayout Grid.Column="0"
+                                             VerticalOptions="Center">
+                                    <Label Text="{Binding StopId}"
+                                           FontSize="Large"
+                                           FontAttributes="Bold"
+                                           ></Label>
+                                </StackLayout>
+                                
+                                <StackLayout Grid.Column="2" VerticalOptions="CenterAndExpand">
+                                    <Label Text="{Binding StopTitle}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding StopSubtitle}"
+                                           FontSize="15"></Label>
+                                </StackLayout>
+                                
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
